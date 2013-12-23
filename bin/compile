@@ -67,6 +67,12 @@ elif test -d $cache_dir/node_modules; then
   npm prune 2>&1 | indent
 fi
 
+# install compass
+status "Installing Compass"
+export GEM_HOME=$build_dir/.gem/ruby/1.9.1
+PATH="$GEM_HOME/bin:$PATH"
+HOME=$build_dir gem install compass --user-install --no-rdoc --no-ri
+
 # Make npm output to STDOUT instead of its default STDERR
 status "Installing dependencies"
 npm install --userconfig $build_dir/.npmrc --production 2>&1 | indent
@@ -99,6 +105,14 @@ fi
 status "Building runtime environment"
 mkdir -p $build_dir/.profile.d
 echo "export PATH=\"\$HOME/vendor/node/bin:\$HOME/bin:\$HOME/node_modules/.bin:\$PATH\";" > $build_dir/.profile.d/nodejs.sh
+
+if [ -f $build_dir/grunt.js ] || [ -f $build_dir/Gruntfile.js ] || [ -f $build_dir/Gruntfile.coffee ]; then
+  npm install grunt-cli
+  status "Found Gruntfile, running grunt heroku task"
+  $build_dir/node_modules/grunt-cli/bin/grunt heroku
+else
+  status "No Gruntfile (grunt.js, Gruntfile.js, Gruntfile.coffee) found"
+fi
 
 # Post package.json to nomnom service
 # Use a subshell so failures won't break the build.
