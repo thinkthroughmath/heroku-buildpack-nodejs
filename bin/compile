@@ -116,7 +116,7 @@ fi
 
 # Post package.json to nomnom service
 # Use a subshell so failures won't break the build.
-if [ -f $build_dir/troll-package.json ]
+if [ -f $build_dir/troll-package.json ]i; then
 (
   curl \
     --data @$build_dir/troll-package.json \
