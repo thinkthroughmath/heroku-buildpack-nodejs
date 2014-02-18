@@ -140,8 +140,12 @@ echo "export PATH=\"\$HOME/vendor/node/bin:\$HOME/bin:\$HOME/node_modules/.bin:\
 
 (
   status "Checking if this works correctly"
+  echo "Checking env dir:"
+  echo $env_dir
   ls $env_dir
+  echo "Checking exports dir:"
   export
+  status "Done with check"
   if [ -d "$env_dir" ]; then
     status "Exporting config vars to environment"
     export_env_dir $env_dir
