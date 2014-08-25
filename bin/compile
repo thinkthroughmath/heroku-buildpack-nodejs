@@ -75,9 +75,10 @@ elif test -d $cache_dir/node/node_modules; then
 
 fi
 
-# Add gem home to PATH so bundler will work
-export GEM_HOME=$build_dir/.gem/ruby/1.9.1
-PATH="$GEM_HOME/bin:$PATH"
+# Set gem home and add gem home to PATH so bundle exec will use gems installed by
+# bundler in the ruby buildpack
+export GEM_HOME=$build_dir/vendor/bundle/ruby/2.0.0/
+PATH=$GEM_HOME/bin:$build_dir/vendor/ruby-2.0.0/bin:$PATH
 
 # Scope config var availability only to `npm install`
 (
